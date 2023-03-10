@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { TextField, SearchInput } from '../../components/base';
+import { useRouter } from 'next/router';
+import { SearchInput } from '../../components/base';
 
 export const BlankSearch = () => {
-  const [address, setAddress] = useState('');
+  const router = useRouter();
 
   const onSearch = (query: string) => {
-    console.log(query);
+    router.push(`?address=${query}`);
   }
 
   return (

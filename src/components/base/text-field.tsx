@@ -14,7 +14,7 @@ export const TextField = ({ label, value, onChange, className }: TextFieldProps)
       type='text'
       placeholder={label}
       className={clsx([
-        'min-h-[auto] w-full rounded bg-transparent py-1.5 px-2 leading-[1.6] border shadow-sm',
+        'min-h-[auto] w-full rounded bg-transparent py-1.5 px-2 leading-[1.6] border shadow-sm text-gray-700',
         'focus:outline-blue-300',
         className
       ])}

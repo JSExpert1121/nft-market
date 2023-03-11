@@ -5,7 +5,7 @@ export const BlankSearch = () => {
   const router = useRouter();
 
   const onSearch = (query: string) => {
-    router.push(`?address=${query}`);
+    router.push(`/${query}`);
   }
 
   return (

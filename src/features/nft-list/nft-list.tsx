@@ -26,7 +26,7 @@ export const NFTList = () => {
   });
 
   const handleSearch = (addr: string) => {
-    router.push(`/${addr}`);
+    window.location.pathname = `/${addr}`;
   }
 
   const handleView = (data: NftDetails) => {
@@ -50,8 +50,10 @@ export const NFTList = () => {
         />
       </div>
 
+      {!!error && <p className='text-red-600 text-sm'>{error}</p>}
+      {!error && data.length === 0 && <p className='text-red-600 text-sm'>No NFTs</p>}
+
       <div className='max-w-5xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-6'>
-        {!!error && <p className='text-red-700 text-sm'>{error}</p>}
         {data.map(item => (
           <NftCard key={item.token_id} data={item} onView={handleView} />
         ))}

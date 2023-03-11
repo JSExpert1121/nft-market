@@ -78,7 +78,7 @@ export const NFTList = () => {
         {!!current && <NftDetailView data={current} />}
         <div className='flex justify-end gap-4'>
           <Button variant='text' onClick={handleClose}>Cancel</Button>
-          <Button variant='primary' onClick={handleBuy}>Buy</Button>
+          <Button variant='primary' onClick={handleBuy}>Purchase</Button>
         </div>
       </Modal>
     </div>

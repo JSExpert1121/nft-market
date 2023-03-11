@@ -11,6 +11,7 @@ import { NftDetailView } from './components/nft-detail-view';
 import { Button } from '@/components/base/button';
 import { Icon } from '@/components/base/icon';
 import { createClose } from '@/assets/icons';
+import { buildOpenseaURL } from '@/utils';
 
 export const NFTList = () => {
   const router = useRouter();
@@ -36,7 +37,9 @@ export const NFTList = () => {
   const handleClose = () => setTimeout(() => setCurrent(null), 100);
   const handleBuy = () => {
     setTimeout(() => setCurrent(null), 100);
-    console.log(current);
+    if (current?.token_address) {
+      window.open(buildOpenseaURL(current.token_address, current.token_id), '_blank');
+    }
   }
 
   return (

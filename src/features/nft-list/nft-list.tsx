@@ -1,21 +1,81 @@
 import { useState } from 'react';
-import { TextField } from '../../components/base';
-import { BlankSearch } from './blank-search';
+import { useRouter } from 'next/router';
+import useInfiniteScroll from 'react-infinite-scroll-hook';
 
-type NFTListProps = {
-  query?: string;
-};
+import { useNfts } from './hooks';
+import { SearchInput, Spinner } from '@/components/base';
+import { NftCard } from './components';
+import { NftDetails } from '@/types';
+import { Modal } from '@/components/base/modal';
+import { NftDetailView } from './components/nft-detail-view';
+import { Button } from '@/components/base/button';
+import { Icon } from '@/components/base/icon';
+import { createClose } from '@/assets/icons';
 
-export const NFTList = ({ query }: NFTListProps) => {
-  const [address, setAddress] = useState<string>(query ?? '');
+export const NFTList = () => {
+  const router = useRouter();
+  const address = router.query.address as string;
 
-  return query ? (
-    <TextField
-      label='Input your address'
-      value={address}
-      onChange={e => setAddress(e.target.value)}
-    />
-  ) : (
-    <BlankSearch />
-  )
+  const [current, setCurrent] = useState<NftDetails | null>(null);
+  const { data, error, loading, hasNextPage, fetchNfts } = useNfts(address);
+  const [loaderRef] = useInfiniteScroll({
+    loading,
+    hasNextPage,
+    onLoadMore: fetchNfts,
+    disabled: !!error,
+  });
+
+  const handleSearch = (addr: string) => {
+    router.push(`/${addr}`);
+  }
+
+  const handleView = (data: NftDetails) => {
+    setCurrent(data);
+  }
+
+  const handleClose = () => setTimeout(() => setCurrent(null), 100);
+  const handleBuy = () => {
+    setTimeout(() => setCurrent(null), 100);
+    console.log(current);
+  }
+
+  return (
+    <div className='h-full w-full px-4 overflow-y-auto'>
+      <div className='flex my-2'>
+        <SearchInput
+          initValue={address}
+          label='Input an address'
+          onSearch={handleSearch}
+          className='w-[480px] max-w-full'
+        />
+      </div>
+
+      <div className='max-w-5xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-6'>
+        {!!error && <p className='text-red-700 text-sm'>{error}</p>}
+        {data.map(item => (
+          <NftCard key={item.token_id} data={item} onView={handleView} />
+        ))}
+      </div>
+
+      {(loading || hasNextPage) && (
+        <div ref={loaderRef} className='h-24 flex justify-center items-center'>
+          <Spinner />
+        </div>
+      )}
+
+      <Modal open={!!current} onClose={handleClose}>
+        <div className='flex justify-between'>
+          <h1 className='text-xl my-2 text-center font-semibold'>{current?.name}</h1>
+          <Button variant='text' onClick={handleClose} className='min-w-min'>
+            <Icon content={createClose} className='w-6 h-6' />
+          </Button>
+        </div>
+        {!!current && <NftDetailView data={current} />}
+        <div className='flex justify-end gap-4'>
+          <Button variant='text' onClick={handleClose}>Cancel</Button>
+          <Button variant='primary' onClick={handleBuy}>Buy</Button>
+        </div>
+      </Modal>
+    </div>
+  );
 }

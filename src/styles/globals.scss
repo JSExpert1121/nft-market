@@ -44,10 +44,10 @@
 
   .modal-wrapper {
     @apply w-screen h-screen bg-slate-400 flex justify-center items-center;
-    @apply z-[1200] fixed top-0 left-0 bg-opacity-80;
+    @apply z-[1200] fixed top-0 left-0 bg-opacity-80 overflow-y-auto;
 
     & .modal-root {
-      @apply bg-white rounded-md p-4 shadow-lg shadow-slate-700;
+      @apply bg-white rounded-md p-4 shadow-lg shadow-slate-700 max-w-full m-auto;
 
       &.modal-xs { width: 400px; }
       &.modal-sm { width: 640px; }
@@ -55,5 +55,10 @@
       &.modal-lg { width: 1024px; }
       &.modal-xl { width: 1280px; }
     }
+  }
+
+  .button {
+    @apply px-4 py-2 rounded-md;
+    min-width: 120px;
   }
 }

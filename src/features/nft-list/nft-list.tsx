@@ -8,6 +8,9 @@ import { NftCard } from './components';
 import { NftDetails } from '@/types';
 import { Modal } from '@/components/base/modal';
 import { NftDetailView } from './components/nft-detail-view';
+import { Button } from '@/components/base/button';
+import { Icon } from '@/components/base/icon';
+import { createClose } from '@/assets/icons';
 
 export const NFTList = () => {
   const router = useRouter();
@@ -30,15 +33,20 @@ export const NFTList = () => {
     setCurrent(data);
   }
 
-  const handleClose = () => setCurrent(null);
+  const handleClose = () => setTimeout(() => setCurrent(null), 100);
+  const handleBuy = () => {
+    setTimeout(() => setCurrent(null), 100);
+    console.log(current);
+  }
 
   return (
     <div className='h-full w-full px-4 overflow-y-auto'>
       <div className='flex my-2'>
         <SearchInput
+          initValue={address}
           label='Input an address'
           onSearch={handleSearch}
-          className='w-[400px] max-w-full'
+          className='w-[480px] max-w-full'
         />
       </div>
 
@@ -56,7 +64,17 @@ export const NFTList = () => {
       )}
 
       <Modal open={!!current} onClose={handleClose}>
+        <div className='flex justify-between'>
+          <h1 className='text-xl my-2 text-center font-semibold'>{current?.name}</h1>
+          <Button variant='text' onClick={handleClose} className='min-w-min'>
+            <Icon content={createClose} className='w-6 h-6' />
+          </Button>
+        </div>
         {!!current && <NftDetailView data={current} />}
+        <div className='flex justify-end gap-4'>
+          <Button variant='text' onClick={handleClose}>Cancel</Button>
+          <Button variant='primary' onClick={handleBuy}>Buy</Button>
+        </div>
       </Modal>
     </div>
   );

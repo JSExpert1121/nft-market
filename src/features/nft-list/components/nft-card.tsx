@@ -23,7 +23,11 @@ export const NftCard = ({ data, className, onView }: NftCardProps) => {
       ])}
       onClick={() => onView(data)}
     >
-      <img src={imageSrc.replace('ipfs://', 'https://ipfs.io/ipfs/')} alt={data.name} />
+      <img
+        src={imageSrc.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+        alt={data.name}
+        className='w-full'
+      />
       <h1 className='text-xl my-2 text-center font-semibold'>{data.name}</h1>
 
       <div className='w-full'>

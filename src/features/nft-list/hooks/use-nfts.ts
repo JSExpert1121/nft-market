@@ -29,7 +29,10 @@ export const useNfts = (address: string): NftsData => {
         cursorRef.current = cursor;
         setData(data => [
           ...data,
-          ...nfts.map((nft: any) => ({ ...nft, metadata: JSON.parse(nft.metadata) }))
+          ...nfts.map((nft: any) => ({
+            ...nft,
+            metadata: JSON.parse(nft.metadata)
+          }))
         ]);
       } else {
         setHasNextPage(false);

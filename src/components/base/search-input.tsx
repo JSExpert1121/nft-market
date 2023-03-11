@@ -1,4 +1,4 @@
-import { KeyboardEvent, ChangeEvent, useState } from 'react';
+import { KeyboardEvent, ChangeEvent, useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { StyledProps } from '@/types/styled';
 import { createClose, createSearch } from '@/assets/icons';
@@ -7,11 +7,16 @@ import { Icon } from './icon';
 
 export type SearchInputProps = StyledProps & {
   label?: string;
+  initValue?: string;
   onSearch: (value: string) => void | Promise<void>;
 }
-export const SearchInput = ({ label, onSearch, className }: SearchInputProps) => {
-  const [value, setValue] = useState('');
+export const SearchInput = ({ initValue = '', label, onSearch, className }: SearchInputProps) => {
+  const [value, setValue] = useState(initValue);
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
+
+  useEffect(() => {
+    setValue(initValue);
+  }, [initValue])
 
   const handleKeyInput = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -22,14 +27,13 @@ export const SearchInput = ({ label, onSearch, className }: SearchInputProps) =>
   };
 
   return (
-    <div className='relative'>
+    <div className={clsx(['relative', className])}>
       <input
         type='text'
         placeholder={label}
         className={clsx([
           'min-h-[auto] w-full rounded-md bg-transparent py-1.5 px-10 leading-[1.6] border shadow-sm text-gray-700',
-          'focus:outline-blue-300',
-          className
+          'focus:outline-blue-300'
         ])}
         onKeyDown={handleKeyInput}
         {...{ value, onChange }}

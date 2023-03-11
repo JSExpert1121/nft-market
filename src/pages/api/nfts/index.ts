@@ -22,9 +22,15 @@ export default async function handler(
     chain: EvmChain.ETHEREUM,
     limit: 12
   };
-
+  
   if (cursor) params.cursor = cursor;
-  const result = await Moralis.EvmApi.nft.getWalletNFTs(params);
 
-  res.status(200).json(result);
+  try {
+    await Moralis.EvmApi.resolve.resolveAddress({ address });
+    const result = await Moralis.EvmApi.nft.getWalletNFTs(params);
+    res.status(200).json(result);
+  } catch (e: any) {
+    const message = e.message ?? JSON.stringify(e);
+    res.status(500).json({ message });
+  }
 }

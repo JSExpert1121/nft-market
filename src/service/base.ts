@@ -21,7 +21,7 @@ export function post(url: string, body: PureObject) {
     body: JSON.stringify(body)
   }).then(res => res.json().then(data => {
     if (res.ok) return data;
-    else throw data.reason;
+    else throw data;
   }));
 }
 
@@ -33,6 +33,6 @@ export function get(url: string, params = {}) {
     }
   }).then(res => res.json().then(data => {
     if (res.ok) return data;
-    else throw data.reason;
+    else throw data;
   }));
 }

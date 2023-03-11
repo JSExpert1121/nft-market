@@ -11,6 +11,7 @@ import { NftDetailView } from './components/nft-detail-view';
 import { Button } from '@/components/base/button';
 import { Icon } from '@/components/base/icon';
 import { createClose } from '@/assets/icons';
+import { buildOpenseaURL } from '@/utils';
 
 export const NFTList = () => {
   const router = useRouter();
@@ -26,7 +27,7 @@ export const NFTList = () => {
   });
 
   const handleSearch = (addr: string) => {
-    router.push(`/${addr}`);
+    window.location.pathname = `/${addr}`;
   }
 
   const handleView = (data: NftDetails) => {
@@ -36,7 +37,9 @@ export const NFTList = () => {
   const handleClose = () => setTimeout(() => setCurrent(null), 100);
   const handleBuy = () => {
     setTimeout(() => setCurrent(null), 100);
-    console.log(current);
+    if (current?.token_address) {
+      window.open(buildOpenseaURL(current.token_address, current.token_id), '_blank');
+    }
   }
 
   return (
@@ -50,8 +53,10 @@ export const NFTList = () => {
         />
       </div>
 
+      {!!error && <p className='text-red-600 text-sm'>{error}</p>}
+      {!error && data.length === 0 && <p className='text-red-600 text-sm'>No NFTs</p>}
+
       <div className='max-w-5xl mx-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-6'>
-        {!!error && <p className='text-red-700 text-sm'>{error}</p>}
         {data.map(item => (
           <NftCard key={item.token_id} data={item} onView={handleView} />
         ))}
@@ -73,7 +78,7 @@ export const NFTList = () => {
         {!!current && <NftDetailView data={current} />}
         <div className='flex justify-end gap-4'>
           <Button variant='text' onClick={handleClose}>Cancel</Button>
-          <Button variant='primary' onClick={handleBuy}>Buy</Button>
+          <Button variant='primary' onClick={handleBuy}>Purchase</Button>
         </div>
       </Modal>
     </div>

@@ -38,6 +38,7 @@ export const useNfts = (address: string): NftsData => {
         setHasNextPage(false);
       }
     } catch (e: any) {
+      setHasNextPage(false);
       setError(e.message ?? JSON.stringify(e));
     } finally {
       setLoading(false);
